@@ -7,7 +7,7 @@ using namespace std;
 fstream entry("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entries.txt", fstream::app);
 fstream editing("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entries.txt");
 fstream key("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entry_key.txt", fstream::app);
-string login() 
+string login()
 {
 	system("CLS");
 	string enter = "";
@@ -18,7 +18,7 @@ string login()
 	cin >> enter;
 	return enter;
 }
-int menu() 
+int menu()
 {
 	system("CLS");
 	int user_choice = 0;
@@ -30,33 +30,36 @@ int menu()
 	cin >> user_choice;
 	return user_choice;
 }
-void new_entry() 
+void new_entry()
 {
 	system("CLS");
 	string write;
 	cout << "to cancel enter X" << endl;
 	cout << "Create a title for the new entry" << endl;
 	cin.ignore();
-	getline(cin,write);
-	if (write == "X" || write == "x") 
+	getline(cin, write);
+	if (write == "X" || write == "x")
 	{
 		menu();
 	}
-	else 
+	else
 	{
 		key << write << endl;
-		entry << write<<endl;
+		entry << write << endl;
 	}
 	system("CLS");
 	string note;
 	cout << "to cancel enter X" << endl;
 	cout << "begin your entry:" << endl;
-	cin.ignore();
 	getline(cin, note);
 	if (note == "X" || note == "x")
+	{
 		menu();
+	}
 	else
+	{
 		entry << note << endl;
+	}
 	entry << " " << endl;
 }
 int main()
