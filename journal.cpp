@@ -1,19 +1,40 @@
 ﻿#include <iostream>
 #include <fstream>
-#define password "test123";
+#define password "test123"
 using namespace std;
 
-fstream file("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\entries.txt", fstream::app);
-void menu() 
+fstream entry("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entries.txt", fstream::app);
+fstream key("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entry_key.txt", fstream::app);
+string login() 
 {
+	system("CLS");
+	string enter = "";
+	cout << "                                   " << endl;
+	cout << "*____________ LOG  IN ____________*" << endl;
+	cout << "                                   " << endl;
+	cout << "       PASSWORD: ";
+	cin >> enter;
+	return enter;
+}
+int menu() 
+{
+	system("CLS");
+	int user_choice = 0;
 	cout << "                                   " << endl;
 	cout << "*____________ JOURNAL ____________*" << endl;
 	cout << "|                                 |" << endl;
 	cout << "|          [1]NEW ENTRY           |" << endl;
 	cout << "|          [2]READ ENTRY          |" << endl;
+	cin >> user_choice;
+	return user_choice;
 }
 int main()
 {
-	file << "gay boy ja ja ja";
+	string passcode;
+	while (passcode != password)
+	{
+		passcode = login();
+	}
 	menu();
+	//entry << "" << endl;
 }
