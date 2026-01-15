@@ -2,14 +2,13 @@
 #include <fstream>
 #include <string>
 #define password "test123"
-#define dontcancel(x) x != "x" && x != "X"
+#define cancel(x) x == ""
 using namespace std;
 
 fstream entry("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entries.txt", fstream::app);
 fstream editing("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entries.txt");
 fstream key("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entry_key.txt", fstream::app);
-string hold_title = "";
-string hold_note = "";
+fstream key_read("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal\\journal\\entry_key.txt");
 string login() 
 {
 	system("CLS");
@@ -33,57 +32,77 @@ int menu()
 	cin >> user_choice;
 	return user_choice;
 }
-string new_entry_title()
-{
-	system("CLS");
-	string write;
-	cout << "to cancel enter X" << endl;
-	cout << "Create a title for the new entry" << endl;
-	getline(cin, write);
-	return write;
-}
-string entry_note() 
+string entry_part(int decide) 
 {
 	system("CLS");
 	string note;
-	cout << "to cancel enter X" << endl;
-	cout << "begin your entry:" << endl;
+	cout << "to cancel, enter" << endl;
+	if(decide == 2)
+		cout << "begin your entry:" << endl;
+	else
+		cout << "Create a title for the new entry" << endl;
 	getline(cin, note);
 	return note;
 }
 void helper() 
 {
 	int choice = menu();
+	system("CLS");
 	if (choice == 1)
 	{
 		cin.ignore();
-		string title = new_entry_title();
-		if (dontcancel(title))
-		{
-			hold_title = title;
-			string note = entry_note();
-			if (dontcancel(note))
-			{
-				hold_note = note;
-			}
-			else
-			{
-				helper();
-			}
-		}
-		else
+		string title = entry_part(1);
+		string note = entry_part(2);
+		if (cancel(title))
 		{
 			helper();
 		}
-		if (dontcancel(hold_note) && dontcancel(hold_title))
+		else if (cancel(note))
 		{
-			entry << " " << endl;
-			entry << hold_title << endl;
-			key << hold_title << endl;
-			entry << hold_note << endl;
+			helper();
 		}
-		hold_note.clear();
-		hold_title.clear();
+		if (note != "" || title != "")
+		{
+			entry << title << endl;
+			key << title << endl;
+			entry << note << endl;
+		}
+		note.clear();
+		title.clear();
+	}
+	else if (choice == 2) 
+	{
+		string user_choice;
+		string lines = "";
+		cout << "Your previous entries:" << endl;
+		while (getline(key_read, lines)) 
+		{
+			cout << lines << endl;
+		}
+		cout << "enter entry name to read" << endl;
+		cin >> user_choice;
+		lines = "";
+		int parts = 0;
+		string response;
+		system("CLS");
+		while (getline(editing, lines)) 
+		{
+			parts;
+			if (lines == user_choice)
+			{
+				cout << "to return, enter" << endl;
+				cout << lines << endl;
+				parts++;
+			}
+			else if (parts == 1)
+			{
+				cout << lines << endl;
+				cin.ignore();
+				getline(cin, response);
+				if (cancel(response))
+					helper();
+			}
+		}
 	}
 }
 int main()
@@ -93,5 +112,8 @@ int main()
 	{
 		passcode = login();
 	}
-	helper();
+	while (true)
+	{
+		helper();
+	}
 }
