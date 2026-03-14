@@ -3,13 +3,13 @@
 #include <vector>
 #include <string>
 using namespace std;
-fstream entry_file("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal_final\\journal_final\\entries.txt", fstream::app);
-fstream key("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal_final\\journal_final\\entry_key.txt", fstream::app);
+fstream entry_file("entries.txt", fstream::app);
+fstream key("entry_key.txt", fstream::app);
 
 vector<string> getTitles()
 {
 	vector<string> titles;
-	fstream key_read("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal_final\\journal_final\\entry_key.txt");
+	fstream key_read("entry_key.txt");
 	for (string line; getline(key_read, line); )
 		titles.push_back(line);
 	return titles;
@@ -19,7 +19,7 @@ pair<string, string> getFullEntry(string entry_title)
 	string lines;
 	string title;
 	string entry;
-	fstream editing("C:\\Users\\user\\Desktop\\PROJEKTY\\CPP\\journal_final\\journal_final\\entries.txt");
+	fstream editing("entries.txt");
 	int parts = 0;
 	while (getline(editing, lines))
 	{
