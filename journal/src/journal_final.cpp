@@ -6,7 +6,7 @@
 #define password "test123"
 #define notcancel(x) x != ""
 using namespace std;
-enum MENU_ACTION {new_entry = 1, read_entry};
+enum MENU_ACTION {new_entry = 1, read_entry, edit_entry};
 string login() 
 {
 	system("CLS");
@@ -28,8 +28,9 @@ MENU_ACTION menu()
 	cout << "|                                 |" << endl;
 	cout << "|          [1]NEW ENTRY           |" << endl;
 	cout << "|          [2]READ ENTRY          |" << endl;
+	cout << "|          [3]EDIT ENTRY          |" << endl;
 	cin >> input;
-	return static_cast<MENU_ACTION>(input);
+	return static_cast<MENU_ACTION>(input); 
 }
 
 string getUserInputWithCancel(string userPrompt) {
@@ -84,8 +85,11 @@ void readEntry()
 	cout << "enter entry name to read" << endl;
 	cin.ignore();
 	getline(cin, user_choice);
-	auto [title, entry] = getFullEntry(user_choice);
-	printEntry(title, entry);
+	int position = Find_Position(user_choice);
+	auto test = getFullEntry(user_choice);
+	cout<< test.first<<endl;
+	cout<< test.second<<endl;
+	//printEntry(title, entry);
 }
 void handleMenuActions(MENU_ACTION choice) 
 {	
@@ -97,6 +101,10 @@ void handleMenuActions(MENU_ACTION choice)
 	{
 		readEntry();
 	}
+	/*else if(choice == edit_entry)
+	{
+
+	}*/
 }
 int main()
 {
@@ -105,8 +113,5 @@ int main()
 	{
 		passcode = login();
 	}
-	while (true)
-	{
-		handleMenuActions(menu()); 
-	}
+	handleMenuActions(menu()); 
 }
