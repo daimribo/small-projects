@@ -60,16 +60,18 @@ pair<string, string> getFullEntry(int title_position)
 	string lines;
 	string title;
 	string entry;
-	double turn = 0.5;
+	double title_turn = 0.5;
+	int key_turn = 0;
 	fstream editing("entries.txt");
 	while (getline(editing, lines))
 	{
-		turn += 0.5;
-		if (turn == title_position)
-			title = decryption(lines, Get_Encryption_Key(turn));
-		else if (turn == title_position + 0.5)
+		key_turn ++;
+		title_turn += 0.5;
+		if (title_turn == title_position)
+			title = decryption(lines, Get_Encryption_Key(key_turn));
+		else if (title_turn == title_position + 0.5)
 		{
-			entry = decryption(lines, Get_Encryption_Key(ceil(turn)));
+			entry = decryption(lines, Get_Encryption_Key(ceil(key_turn)));
 			break;
 		}
 	}
