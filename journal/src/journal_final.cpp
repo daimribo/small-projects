@@ -56,9 +56,13 @@ string getEntryTitle()
 void printTitles(vector<string> title_list) 
 {
 	system("CLS");
+	int pos = 0;
 	cout << "Your previous entries:" << endl;
 	for (string title : title_list)
-		cout << title << endl;
+		{ 
+			pos++;
+			cout <<pos<<" "<< title << endl;
+		}
 }
 void printEntry(const string title, const string entry) 
 {
@@ -80,16 +84,13 @@ void createNewEntry()
 }
 void readEntry() 
 {
-	string user_choice;
+	int user_choice;
 	printTitles(getTitles());
-	cout << "enter entry name to read" << endl;
+	cout << "enter entry number to read" << endl;
 	cin.ignore();
-	getline(cin, user_choice);
-	int position = Find_Position(user_choice);
-	auto test = getFullEntry(user_choice);
-	cout<< test.first<<endl;
-	cout<< test.second<<endl;
-	//printEntry(title, entry);
+	cin >> user_choice;
+	auto entry_parts = getFullEntry(user_choice);
+	printEntry(entry_parts.first, entry_parts.second);
 }
 void handleMenuActions(MENU_ACTION choice) 
 {	
@@ -103,7 +104,7 @@ void handleMenuActions(MENU_ACTION choice)
 	}
 	/*else if(choice == edit_entry)
 	{
-
+		
 	}*/
 }
 int main()

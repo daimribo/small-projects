@@ -9,7 +9,6 @@ fstream entry_key("entry_titles.txt", fstream::app);
 
 pair<string,int> encrypt(string text)
 {
-	srand(NULL);
 	int key = rand();
 	for(auto &letter : text)
 		letter = (letter+key);
@@ -21,23 +20,15 @@ string decryption(string text, int code)
 		letter = (letter-code);
 	return text;
 }
-int Find_Position(string input)
+/*int Index_Entries()
 {
-	int position = 0;
-	int code = 0;
 	string line;
-	ifstream keys("keys.txt");
-	ifstream titles("entry_title.txt");
-	while(getline(titles,line))
-	{
-		position++;
-		while(keys >> code)
-		{
-			if(decryption(line,code) == input)
-				return position;
-		}
-	}
-}
+	ifstream read_titles("entry_titles.txt");
+	int index = 1;
+	while(read_titles >> line)
+		index++;
+	return index;
+}*/
 int Get_Encryption_Key(int position)
 {
 	int line =0;
@@ -49,39 +40,36 @@ int Get_Encryption_Key(int position)
 		if(turn == position)
 			return line;
 	}
+	return 0;
 }
 vector<string> getTitles()
 {
-	int location = 0;
+	int key_location = -1;
 	vector<string> titles;
 	fstream entry_key_read("entry_titles.txt");
-	for (string line; getline(entry_key_read, line); )
+	for (string line; getline(entry_key_read, line);)
 	{
-		location++;
-		titles.push_back(decryption(line,Get_Encryption_Key(location)));
+		key_location+= 2;
+		titles.push_back(decryption(line,Get_Encryption_Key(key_location)));
 	}
 	return titles;
 }
-pair<string, string> getFullEntry(string entry_title)
+pair<string, string> getFullEntry(int title_position)
 {
+	cin.ignore();
 	string lines;
 	string title;
 	string entry;
-	int turn = 0;
+	double turn = 0.5;
 	fstream editing("entries.txt");
-	int parts = 0;
 	while (getline(editing, lines))
 	{
-		turn++;
-		if (lines == entry_title)
-		{
-			parts++;
+		turn += 0.5;
+		if (turn == title_position)
 			title = decryption(lines, Get_Encryption_Key(turn));
-		}
-		else if (parts == 1)
+		else if (turn == title_position + 0.5)
 		{
-			parts = 0;
-			entry = decryption(lines, Get_Encryption_Key(turn));
+			entry = decryption(lines, Get_Encryption_Key(ceil(turn)));
 			break;
 		}
 	}
@@ -92,7 +80,7 @@ void writeNewEntryIntoFile(const string& title, const string& note)
 	auto encryption_entry = encrypt(note);
 	auto encryption_title = encrypt(title);
 	entry_file << encryption_title.first << endl;
-	entry_key << encryption_title.first << endl;
+	entry_key<< encryption_title.first << endl;
 	entry_file << encryption_entry.first << endl;
 	key << encryption_title.second << endl;
 	key << encryption_entry.second << endl;
